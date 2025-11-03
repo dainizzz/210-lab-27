@@ -62,22 +62,25 @@ int main() {
 				cout << "Who do you want to increase friendship with?" << endl;
 				cin >> villager;
 				increaseFriendship(villager, villagers);
+				displayVillagerData(villagers);
 				break;
 			case 2:
 				cout << "Who do you want to decrease friendship with?" << endl;
 				cin >> villager;
 				decreaseFriendship(villager, villagers);
+				displayVillagerData(villagers);
 				break;
 			case 3:
 				cout << "Which villager are you searching for?" << endl;
 				cin >> villager;
 				searchForVillager(villager, villagers);
+				displayVillagerData(villagers);
 				break;
 			case 4:
 				again = false;
 				break;
 			default:
-				break; // Invalid choices should already be caught in main_menu();
+				break; // Invalid choices should already be caught in displayMenu();
 		}
 	}
 
@@ -100,13 +103,13 @@ int displayMenu() {
 
 void decreaseFriendship(string villager, map<string, tuple<int, string, string> > &villagers) {
 	auto it = villagers.find(villager);
-	if (it != villagers.end())
+	if (it != villagers.end() && get<0>(it->second) > 0)
 		get<0>(it->second)--;
 }
 
 void increaseFriendship(string villager, map<string, tuple<int, string, string> > &villagers) {
 	auto it = villagers.find(villager);
-	if (it != villagers.end())
+	if (it != villagers.end() && get<0>(it->second) < 10)
 		get<0>(it->second)++;
 }
 
@@ -114,7 +117,7 @@ void searchForVillager(string villager, const map<string, tuple<int, string, str
 	auto it = villagers.find(villager);
 	if (it != villagers.end()) {
 		cout << "\nFound " << villager << "'s friendship score, species, and catchphrase: ";
-		cout << get<0>(it->second) << '\t' << get<1>(it->second) << '\t' << get<2>(it->second);
+		cout << get<0>(it->second) << ", " << get<1>(it->second) << ", " << get<2>(it->second);
 		cout << endl;
 	} else
 		cout << endl << villager << " not found." << endl;
