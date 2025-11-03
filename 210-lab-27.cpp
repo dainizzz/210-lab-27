@@ -20,20 +20,16 @@ int main() {
     cout << "Villagers, their friendship scores, their species, and their catchphrases (range-based for loop):" << endl;
     for (auto pair : villagers) {
         cout << pair.first << ": ";
-        cout << '\t' <<  get<0>(pair.second) << endl;
-        cout << '\t' << get<1>(pair.second) << endl;
-        cout << '\t' << get<2>(pair.second) << endl;
+        cout << get<0>(pair.second) <<'\t' << get<1>(pair.second) << '\t' << get<2>(pair.second);
         cout << endl;
     }
 
     // access the map using iterators
-    cout << "\nVillagers and their favorite colors (iterators):" << endl;
+    cout << "\nVillagers, their friendship scores, their species, and their catchphrases (iterators):" << endl;
     for (map<string, tuple<int, string, string>>::iterator it = villagers.begin();
                                                it != villagers.end(); ++it) {
         cout << it->first << ": ";
-        for (auto color : it->second) {
-            cout << color << " ";
-        }
+        cout << get<0>(it->second) << '\t' << get<1>(it->second) << '\t' << get<2>(it->second);
         cout << endl;
     }
 
@@ -45,9 +41,8 @@ int main() {
     auto it = villagers.find(searchKey);
     if (it != villagers.end()) {  // the iterator points to beyond the end of the map
                                        // if searchKey is not found
-        cout << "\nFound " << searchKey << "'s favorite colors: ";
-        for (auto color : it->second)  // range loop to traverse the value/vector
-            cout << color << " ";
+        cout << "\nFound " << searchKey << "'s friendship score, species, and catchphrase: ";
+        cout << get<0>(it->second) << '\t' << get<1>(it->second) << '\t' << get<2>(it->second);
         cout << endl;
     } else
         cout << endl << searchKey << " not found." << endl;
