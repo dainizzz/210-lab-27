@@ -49,29 +49,21 @@ int main() {
 	int choice;
 	string villager;
 
-	// insert elements into the map
-	// note how the right-hand side of the assignment are the vector elements
-	villagers["Audie"] = {0, "Wolf", "Foxtrot"};
-	villagers["Raymond"] = {0, "Cat", "Crisp"};
+	// Adding starting villagers
+	villagers["Audie"] = {5, "Wolf", "Foxtrot"};
+	villagers["Raymond"] = {3, "Cat", "Crisp"};
 	villagers.insert({"Marshal", {0, "Squirrel", "Sulky"}});
-
-	// access the map using iterators
-	cout << "\nVillagers, their friendship scores, their species, and their catchphrases (iterators):" << endl;
-	for (map<string, tuple<int, string, string> >::iterator it = villagers.begin();
-	     it != villagers.end(); ++it) {
-		cout << it->first << ": ";
-		cout << get<0>(it->second) << '\t' << get<1>(it->second) << '\t' << get<2>(it->second);
-		cout << endl;
-	}
 
 	bool again = true;
 	while (again) {
 		choice = displayMenu();
 		switch (choice) {
 			case 1:
+				addVillager(villagers);
 				displayVillagerData(villagers);
 				break;
 			case 2:
+				deleteVillager(villagers);
 				displayVillagerData(villagers);
 				break;
 			case 3:
@@ -112,6 +104,34 @@ int displayMenu() {
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	}
 	return choice;
+}
+
+void addVillager(map<string, tuple<int, string, string>> &villagers) {
+	string name, species, catchphrase;
+	int friendship;
+	cout << "Villager name: ";
+	cin >> name;
+	cout << "Friendship level: ";
+	cin >> friendship;
+	cout << "Species: ";
+	cin >> species;
+	cout << "Catchphrase: ";
+	cin.ignore();
+	getline(cin,catchphrase);
+
+	villagers.insert({name, {friendship, species, catchphrase}});
+
+	cout << name << " added.";
+}
+
+void deleteVillager(map<string, tuple<int, string, string>> & villagers) {
+	string villager;
+	cout << "Which villager do you want to delete?" << endl;
+	cin >> villager;
+	auto it = villagers.find(villager);
+	if (it != villagers.end()) {
+		villagers.erase(it);
+	}
 }
 
 void decreaseFriendship(map<string, tuple<int, string, string> > &villagers) {
